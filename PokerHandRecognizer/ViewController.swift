@@ -44,7 +44,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 
         
     }
-
+    
+    
+    //make a function the iterates over result ditionary
+    //if card num is five, pass into function that determines hand
+    
 
 }
 
