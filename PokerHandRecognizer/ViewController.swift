@@ -17,6 +17,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 
     @IBOutlet var sceneView: ARSCNView!
     
+    // COREML
+    var visionRequests = [VNRequest]()
+    let dispatchQueueML = DispatchQueue(label: "com.hw.dispatchqueueml") // A Serial Queue
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setUpARKit()
@@ -38,13 +42,31 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         // Enable Default Lighting - makes the 3D text a bit poppier.
         sceneView.autoenablesDefaultLighting = true
-    }
-    
-    func setUpVision(){
-
         
     }
     
+    func setUpVision(){
+        guard let selectedModel = try? VNCoreMLModel(for: SuitClassifier().model) else { // (Optional) This can be replaced with other models on https://developer.apple.com/machine-learning/
+            fatalError("Could not load model. Ensure model has been drag and dropped (copied) to XCode Project from the GitHub.")
+        }
+        let objectRecognition = VNCoreMLRequest(model: selectedModel, completionHandler: { (request, error) in
+            DispatchQueue.main.async(execute: {
+                if let results = request.results {
+                    self.classifyAsHand(results)
+                }
+            })
+        })
+    }
+    
+    func classifyAsHand(_: results){
+        var cardNum = 0
+        for observation in results where observation is VNRecognizedObjectObservation {
+            guard let objectObserve = observation as? VNRecognizedObjectObservation else{
+                continue
+            }
+            let top = objectObserve.labels[0]
+        }
+    }
     
     //make a function the iterates over result ditionary
     //if card num is five, pass into function that determines hand
