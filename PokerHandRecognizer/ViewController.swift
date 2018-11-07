@@ -46,28 +46,28 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     func setUpVision(){
-        guard let selectedModel = try? VNCoreMLModel(for: SuitClassifier().model) else { // (Optional) This can be replaced with other models on https://developer.apple.com/machine-learning/
+        guard let selectedModel = try? VNCoreMLModel(for: SuitClassifier().model) else {
             fatalError("Could not load model. Ensure model has been drag and dropped (copied) to XCode Project from the GitHub.")
         }
-        let objectRecognition = VNCoreMLRequest(model: selectedModel, completionHandler: { (request, error) in
-            DispatchQueue.main.async(execute: {
-                if let results = request.results {
-                    self.classifyAsHand(results)
-                }
-            })
-        })
+        let dectectionRequest = VNCoreMLRequest(model: selectedModel, completionHandler: objectCompleteHandler)
+        
+        
     }
     
-    func classifyAsHand(_: results){
-        var cardNum = 0
-        for observation in results where observation is VNRecognizedObjectObservation {
-            guard let objectObserve = observation as? VNRecognizedObjectObservation else{
-                continue
-            }
-            let top = objectObserve.labels[0]
-        }
+    func objectCompleteHandler(){
+        
     }
     
+//    func classifyAsHand(_: results){
+//        var cardNum = 0
+//        for observation in results where observation is VNRecognizedObjectObservation {
+//            guard let objectObserve = observation as? VNRecognizedObjectObservation else{
+//                continue
+//            }
+//            let top = objectObserve.labels[0]
+//        }
+//    }
+//
     //make a function the iterates over result ditionary
     //if card num is five, pass into function that determines hand
     
