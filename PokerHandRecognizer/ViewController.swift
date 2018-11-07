@@ -25,6 +25,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         super.viewDidLoad()
         self.setUpARKit()
         self.setUpVision()
+        self.coreMLLoop()
     }
     
     func setUpARKit(){
@@ -46,18 +47,43 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     func setUpVision(){
-        guard let selectedModel = try? VNCoreMLModel(for: SuitClassifier().model) else {
+        guard let selectedModel = try? VNCoreMLModel(for: Recognizer().model) else {
             fatalError("Could not load model. Ensure model has been drag and dropped (copied) to XCode Project from the GitHub.")
         }
         let dectectionRequest = VNCoreMLRequest(model: selectedModel, completionHandler: objectCompleteHandler)
         
+        visionRequests = [dectectionRequest]
         
     }
     
-    func objectCompleteHandler(){
+    func objectCompleteHandler(request: VNRequest, error: Error?){
         
     }
     
+    func coreMLLoop(){
+        dispatchQueueML.async {
+            // 1. Run Update.
+            self.updateCoreML()
+            
+            // 2. Loop this function.
+            self.coreMLLoop()
+        }
+
+    }
+    
+    func updateCoreML(){
+        let pixbuff : CVPixelBuffer? = (sceneView.session.currentFrame?.capturedImage)
+        if pixbuff == nil { return }
+        let ciImage = CIImage(cvPixelBuffer: pixbuff!)
+        
+        let imageRequestHandler = VNImageRequestHandler(ciImage: ciImage, options: [:])
+        do {
+            try imageRequestHandler.perform(self.visionRequests)
+        } catch {
+            print(error)
+        }
+        
+    }
 //    func classifyAsHand(_: results){
 //        var cardNum = 0
 //        for observation in results where observation is VNRecognizedObjectObservation {
@@ -70,7 +96,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 //
     //make a function the iterates over result ditionary
     //if card num is five, pass into function that determines hand
-    
 
+    
 }
 
