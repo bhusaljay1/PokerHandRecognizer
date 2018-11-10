@@ -88,6 +88,41 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     func objectCompleteHandler(request: VNRequest, error: Error?){
+         // Catch Errors
+        if error != nil {
+            print("Error: " + (error?.localizedDescription)!)
+            return
+        }
+        guard let observations = request.results else {
+            print("No results")
+            return
+        }
+        
+        // Get Classifications
+        let classifications = observations[0...1] // top 2 results
+            .flatMap({ $0 as? VNClassificationObservation })
+            .map({ "\($0.identifier) \(String(format:"- %.2f", $0.confidence))" })
+            .joined(separator: "\n")
+        
+        
+        DispatchQueue.main.async {
+            // Print Classifications
+            print(classifications)
+            print("--")
+            
+            // Display Debug Text on screen
+            var debugText:String = ""
+            debugText += classifications
+            self.debugTextView.text = debugText
+            
+            // Store the latest prediction
+            var objectName:String = "…"
+            objectName = classifications.components(separatedBy: "-")[0]
+            objectName = objectName.components(separatedBy: ",")[0]
+            self.latestPrediction = objectName
+            
+        }
+    }
         
     }
     
