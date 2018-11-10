@@ -1,0 +1,79 @@
+cardorder = ["2", "3", "4","5","6","7","8","9","10","Jack","Queen","King","Ace"]
+# 5 cards
+add card number of each card to cards list, and add suits of each card read to suits list
+cards[card1,card2,card3,card4,card5]
+suits[suit1,suit2,suit3,suit4,suit5]
+sorted[]
+
+#returns cards ranked from lowest to highest
+func sortcards(list){
+    sorted.add(cards[0])
+    n = cardorder.find(cards[0])
+    for i = 1 to 5{
+        num = cardorder.find(cards[i])
+        if num < n{
+            sorted.addinfront(cards[i])
+        
+        }
+        else{
+            sorted.add(cards[i])
+        }
+        n = num
+        i++
+    }
+}
+
+
+first = cardorder.find(sorted[0])
+#check for royal flush, straight flush, and flush
+if suits1 == suits2 == suits3 == suits4 == suits5{
+    if sorted[0] == cardorder[8]{
+        hand = "Royal flush"
+    }
+    n = first
+    for i = 1 to i = 5{
+        num = cardorder.find(sorted[i])
+        if num == n + 1{
+            n = num
+        }
+        else if num != n + 1{
+            hand = "Flush"
+        }
+        hand = "Straight flush"
+    }
+}
+
+#check for four of a kind
+else if sorted[0] == sorted[1] == sorted[2] == sorted[3] or sorted[1] == sorted[2] == sorted[3] == sorted[4]{
+    hand = "Four of a kind"
+}
+#check for full house
+else if (sorted[0] == sorted[1] == sorted[2] and sorted[3] == sorted[4]) or (sorted[0] == sorted[1] and sorted[2] == sorted[3] == sorted[4]){
+    hand = "Full house"
+}
+#check for 3 of a kind
+else if (sorted[0] == sorted[1] == sorted[2]) or (sorted[1] == sorted[2] == sorted[3]) or (sorted[2] == sorted[3] == sorted[4]){
+    hand = "Three of a kind"
+}
+#check for 2 pair
+else if(sorted[0] == sorted[1] and (sorted[2] == sorted[3] or sorted[3] == sorted[4])) or (sorted[1] == sorted[2] and sorted[3] == sorted[4]){
+    hand = "Two pair"
+}
+#check for pair
+else if(sorted[0] == sorted[1]) or (sorted[1] == sorted[2]) or (sorted[2] == sorted[3]) or (sorted[3] == sorted[4]){
+    hand = "Pair"
+}
+check for straight
+else{
+rank = first
+for i = 1 to 5{
+    num = cardorder.find(sorted[i])
+    if num == rank + 1{
+        rank = num
+    }
+    else{
+        hand = "High card"
+    }
+    hand = "Straight"
+}
+}
