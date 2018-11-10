@@ -36,6 +36,7 @@
                     <connections>
                         <outlet property="sceneVIew" destination="YTH-M8-m97" id="67U-v2-87e"/>
                         <outlet property="textOutput" destination="0Gp-uF-MrC" id="qWS-zL-RlQ"/>
+                        <outlet property="textView" destination="0Gp-uF-MrC" id="Wcw-Ti-UTP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

@@ -16,6 +16,7 @@ import Vision
 class ViewController: UIViewController, ARSCNViewDelegate {
 
     @IBOutlet var sceneView: ARSCNView!
+    @IBOutlet weak var textView: UITextView!
     
     // COREML
     var visionRequests = [VNRequest]()
@@ -44,6 +45,36 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // Enable Default Lighting - makes the 3D text a bit poppier.
         sceneView.autoenablesDefaultLighting = true
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Create a session configuration
+        let configuration = ARWorldTrackingConfiguration()
+        // Enable plane detection
+        configuration.planeDetection = .horizontal
+        
+        // Run the view's session
+        sceneView.session.run(configuration)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        // Pause the view's session
+        sceneView.session.pause()
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Release any cached data, images, etc that aren't in use.
+    }
+    
+    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        DispatchQueue.main.async {
+            // Do any desired updates to SceneKit here.
+        }
     }
     
     func setUpVision(){
@@ -84,19 +115,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
         
     }
-//    func classifyAsHand(_: results){
-//        var cardNum = 0
-//        for observation in results where observation is VNRecognizedObjectObservation {
-//            guard let objectObserve = observation as? VNRecognizedObjectObservation else{
-//                continue
-//            }
-//            let top = objectObserve.labels[0]
-//        }
-//    }
-//
-    //make a function the iterates over result ditionary
-    //if card num is five, pass into function that determines hand
-
     
 }
 
